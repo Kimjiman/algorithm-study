@@ -29,16 +29,6 @@
         "@upstash/context7-mcp@latest"
       ],
       "description": "Live documentation lookup"
-    },
-    "filesystem": {
-      "command": "cmd",
-      "args": [
-        "/c",
-        "npx",
-        "-y",
-        "@modelcontextprotocol/server-filesystem",
-        "."
-      ]
     }
   }
 }

@@ -7,12 +7,12 @@ import java.util.Stack;
  * 출처: https://school.programmers.co.kr/learn/courses/30/lessons/42584
  * 플랫폼: 프로그래머스 Level 2
  * 유형: 스택
- * 시간복잡도: 1. O(N^2) 1. O(N)
- * 공간복잡도: 1. O(1)   2. O(N(
+ * 시간복잡도: 1. O(N^2) 2. O(N)
+ * 공간복잡도: 1. O(1)   2. O(N)
  * 풀이 날짜: 2026-02-24
  *
  * 1. 이중루프
- * 2.
+ * 2. 스택을 이용한 단조스택(다시풀어봐야할듯)
  */
 public class 주식가격 {
 
@@ -25,6 +25,9 @@ public class 주식가격 {
         // 테스트케이스 2
         int[] prices2 = {3, 1, 2};
         System.out.println(java.util.Arrays.toString(sol.solution2(prices2))); // 기댓값: [1, 1, 0]
+        // 테스트케이스 3
+        int[] prices3 = {1, 5, 0, 1};
+        System.out.println(java.util.Arrays.toString(sol.solution2(prices3))); // 기댓값: [2, 1, 1, 0]
     }
 
     static class Solution {
@@ -51,17 +54,18 @@ public class 주식가격 {
             Stack<Integer> stack = new Stack<>();
 
             for(int i = 0; i < prices.length; i++) {
-                if(stack.isEmpty()) {
-                    stack.push(i);
-                } else {
-                    if(prices[stack.peek()] <= prices[i]) {
-                        stack.push(i);
-                    } else {
-                        answer[stack.peek()] = prices[stack.peek()] - prices[i];
-                        stack.pop();
-                    }
+                while (!stack.isEmpty() && prices[stack.peek()] > prices[i]) {
+                    answer[stack.peek()] = i - stack.peek();
+                    stack.pop();
                 }
+                stack.push(i);
             }
+
+            while(!stack.isEmpty()) {
+                answer[stack.peek()] = prices.length - 1 - stack.peek();
+                stack.pop();
+            }
+
             return answer;
         }
     }

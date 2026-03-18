@@ -1,16 +1,20 @@
 package level1;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 문제: 모의고사
  * 출처: https://school.programmers.co.kr/learn/courses/30/lessons/42840
  * 플랫폼: 프로그래머스 Level 1
  * 유형: 완전탐색
- * 시간복잡도: O(?)
- * 공간복잡도: O(?)
+ * 시간복잡도: O(N)
+ * 공간복잡도: O(1)
  * 풀이 날짜: 2026-03-17
  *
- * [풀이 접근 방식을 여기에 작성하세요]
- *
+ * 첫 루프에, 패턴 매칭해서 배열에 패턴의 개수만큼 매칭되는 개수를 담음
+ * 제일 잘찍은 MAX 구함
+ * return 객체의 개수를 구하고, index도 만듬
  * ===================== 문제 지문 =====================
  * 수포자는 수학을 포기한 사람의 준말입니다.
  * 수포자 삼인방은 모의고사에 수학 문제를 전부 찍으려 합니다.
@@ -45,11 +49,54 @@ public class 모의고사 {
         // 테스트케이스 2
         int[] answers2 = {1, 3, 2, 4, 2};
         System.out.println(java.util.Arrays.toString(sol.solution(answers2))); // 기댓값: [1, 2, 3]
+
+        // 테스트케이스 3
+        int[] answers3 = {5, 5, 3, 1, 2};
+        System.out.println(java.util.Arrays.toString(sol.solution(answers3))); // 기댓값: [3]
     }
 
     static class Solution {
         public int[] solution(int[] answers) {
-            int[] result = {};
+            int[] counts = {0, 0, 0};
+
+            int[] aArr = {1, 2, 3, 4, 5};
+            int[] bArr = {2, 1, 2, 3, 2, 4, 2, 5};
+            int[] cArr = {3, 3, 1, 1, 2, 2, 4, 4, 5, 5};
+
+            for(int i = 0; i < answers.length; i++) {
+                int a = aArr[i % aArr.length];
+                int b = bArr[i % bArr.length];
+                int c = cArr[i % cArr.length];
+
+                if(a == answers[i]) {
+                    counts[0]++;
+                }
+                if(b == answers[i]) {
+                    counts[1]++;
+                }
+                if(c == answers[i]) {
+                    counts[2]++;
+                }
+            }
+
+            int max = 0;
+            for (int count : counts) {
+                if (max < count) max = count;
+            }
+
+
+            List<Integer> list = new ArrayList<>();
+            for (int i = 0; i < counts.length; i++) {
+                if(counts[i] >= max) {
+                    list.add(i + 1);
+                }
+            }
+
+            int[] result = new int[list.size()];
+            for(int i = 0; i < list.size(); i++) {
+                result[i] = list.get(i);
+            }
+
             return result;
         }
     }

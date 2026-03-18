@@ -1,15 +1,21 @@
 package level1;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * 문제: 실패율
  * 출처: https://school.programmers.co.kr/learn/courses/30/lessons/42889
  * 플랫폼: 프로그래머스 Level 1
  * 유형: 정렬 + 구현
- * 시간복잡도: O(?)
- * 공간복잡도: O(?)
+ * 시간복잡도: O(N*M)
+ * 공간복잡도: O(N)
  * 풀이 날짜: 2026-03-18
  *
- * [풀이 접근 방식을 여기에 작성하세요]
+ * 클리어 시나리오를 이중루프로 도출
+ * 정렬 로직
  */
 public class 실패율 {
 
@@ -27,8 +33,39 @@ public class 실패율 {
 
     static class Solution {
         public int[] solution(int N, int[] stages) {
-            int[] answer = {};
-            return answer;
+            Map<Integer, Double> map = new HashMap<>();
+
+            for (int i = 0; i < N; i++) {
+                int up = 0;
+                int down = 0;
+                for (int j = 0; j < stages.length; j++) {
+                    // 클리어한 사람수
+                    if (stages[j] > i + 1) {
+                        up++;
+                    }
+
+                    // 도전한 사람
+                    if (i >= stages[j]) {
+                        down++;
+                    }
+                }
+
+                if (stages.length == down) {
+                    map.put(i + 1, 0.0D);
+                } else {
+                    map.put(i + 1, (double) (stages.length - down - up) / (stages.length - down));
+                }
+            }
+
+            List<Map.Entry<Integer, Double>> list = new ArrayList<>(map.entrySet());
+
+            list.sort((x, y) -> {
+                int tmp = Double.compare(y.getValue(), x.getValue());
+                if (tmp != 0) return tmp;
+                return Integer.compare(x.getKey(), y.getKey());
+            });
+
+            return list.stream().mapToInt(Map.Entry::getKey).toArray();
         }
     }
 }
